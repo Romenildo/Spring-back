@@ -2,6 +2,12 @@ package com.Ktr.helpdesk.controllers.exceptions;
 
 import java.io.Serializable;
 
+
+/**
+ * Classe de Erro padrao do request
+ * criar um igual e manipula-lo da maneira que quiser, as mensagens dos erros
+ * 
+ */
 public class StandardError implements Serializable {
     private static final long serialVersionUID = 1L;
 
