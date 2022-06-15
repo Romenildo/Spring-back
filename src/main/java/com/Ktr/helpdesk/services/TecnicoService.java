@@ -44,15 +44,16 @@ public class TecnicoService {
 
         Optional<Pessoa> obj = pessoaRepository.findByCpf(objDTO.getCpf());
         if(obj.isPresent() && obj.get().getId() != objDTO.getId()){
-
             throw new DataIntegrityViolationException("CPF já cadastrado no sistema");
         }
+
         obj = pessoaRepository.findByEmail(objDTO.getEmail());
         if(obj.isPresent() && obj.get().getId() != objDTO.getId()){
-
             throw new DataIntegrityViolationException("E-mail já cadastrado no sistema");
         }
 
+        //caso id seja igual ao passado, quer dizer que ele vai atualizar, por isso 
+        //que verifica os dois caso cpf repetido mas quer atualizar algo
     }
 
 }
