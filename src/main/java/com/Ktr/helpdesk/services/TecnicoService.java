@@ -3,6 +3,8 @@ package com.Ktr.helpdesk.services;
 import java.util.List;
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -54,6 +56,14 @@ public class TecnicoService {
 
         //caso id seja igual ao passado, quer dizer que ele vai atualizar, por isso 
         //que verifica os dois caso cpf repetido mas quer atualizar algo
+    }
+
+    public Tecnico update(Integer id, @Valid TecnicoDTO objDTO) {
+        objDTO.setId(id);
+        Tecnico oldObj = findById(id);
+        validarCpfeEmail(objDTO);
+        oldObj = new Tecnico(objDTO);
+        return repository.save(oldObj);
     }
 
 }
