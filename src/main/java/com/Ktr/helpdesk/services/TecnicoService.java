@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.Ktr.helpdesk.domain.Tecnico;
 import com.Ktr.helpdesk.repositories.TecnicoRepository;
+import com.Ktr.helpdesk.services.exceptions.ObjectNotFoundException;
 
 @Service
 public class TecnicoService {
@@ -17,7 +18,7 @@ public class TecnicoService {
     public Tecnico findById(Integer id){
         //Optional devido o jpa retorna um objeto do tipo Optional caso ele encontre ou nao o item no banco
         Optional<Tecnico> obj = repository.findById(id);
-        return obj.orElse(null);
+        return obj.orElseThrow(()-> new ObjectNotFoundException("Objeto não encontrado! id : "+ id));
     }
 
 }
