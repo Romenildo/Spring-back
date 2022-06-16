@@ -3,6 +3,8 @@ package com.Ktr.helpdesk.domain.dtos;
 import java.io.Serializable;
 import java.time.LocalDate;
 
+import javax.validation.constraints.NotNull;
+
 import com.Ktr.helpdesk.domain.Chamado;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -14,9 +16,13 @@ public class ChamadoDTO implements Serializable{
     private LocalDate dataAbertura = LocalDate.now();
     @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate dataFechamento;
+    @NotNull(message = "O campo PRIORIDADE é requerido")
     private Integer prioridade;
+    @NotNull(message = "O campo STATUS é requerido")
     private Integer status;
+    @NotNull(message = "O campo TIRULO é requerido")
     private String titulo;
+    @NotNull(message = "O campo OBSERVACOES é requerido")
     private String observacoes;
 
    //so precisa guardar os id deles, so fazer uma busca no banco para enconrar o tecnico e cliente

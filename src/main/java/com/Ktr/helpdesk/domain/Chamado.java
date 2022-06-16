@@ -40,6 +40,12 @@ public class Chamado implements Serializable {
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
 
+    
+
+    public Chamado() {
+        super();
+    }
+
 
     public Chamado(Integer id, LocalDate dataAbertura, LocalDate dataFechamento, Prioridade prioridade, Status status,
             String titulo, String observacoes, Tecnico tecnico, Cliente cliente) {
