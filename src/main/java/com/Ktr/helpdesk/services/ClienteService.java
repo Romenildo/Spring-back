@@ -13,7 +13,6 @@ import com.Ktr.helpdesk.domain.Cliente;
 import com.Ktr.helpdesk.domain.dtos.ClienteDTO;
 import com.Ktr.helpdesk.repositories.ClienteRepository;
 import com.Ktr.helpdesk.repositories.PessoaRepository;
-import com.Ktr.helpdesk.repositories.TecnicoRepository;
 import com.Ktr.helpdesk.services.exceptions.DataIntegrityViolationException;
 import com.Ktr.helpdesk.services.exceptions.ObjectNotFoundException;
 
