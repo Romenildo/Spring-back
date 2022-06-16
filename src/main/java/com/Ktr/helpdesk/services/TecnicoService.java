@@ -6,6 +6,7 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.Ktr.helpdesk.domain.Pessoa;
@@ -23,6 +24,8 @@ public class TecnicoService {
     private TecnicoRepository repository;
     @Autowired
     private PessoaRepository pessoaRepository;
+    @Autowired
+    private BCryptPasswordEncoder encoder;
 
     public Tecnico findById(Integer id){
         //Optional devido o jpa retorna um objeto do tipo Optional caso ele encontre ou nao o item no banco
@@ -36,6 +39,7 @@ public class TecnicoService {
 
     public Tecnico create(TecnicoDTO objDTO){
         objDTO.setId(null);
+        objDTO.setSenha(encoder.encode(objDTO.getSenha()));
         validarCpfeEmail(objDTO);
         Tecnico  newObj = new Tecnico(objDTO);
         return repository.save(newObj);
