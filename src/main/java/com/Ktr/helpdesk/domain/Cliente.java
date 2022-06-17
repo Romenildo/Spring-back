@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class Cliente extends Pessoa{
     private static final long serialVersionUID = 1L;
     
-    @JsonIgnore//caso der esse de serializacao, a lista de chamadas vai ficar chamando os tecnicos
+    @JsonIgnore//caso der erroe de serializacao, a lista de chamadas vai ficar chamando os tecnicos
     //ele entra em loop infinito o jsonIgnore faz com que ele nao precise chamar essa instancia
     @OneToMany(mappedBy = "cliente")
     private List<Chamado> chamados = new ArrayList<>();
