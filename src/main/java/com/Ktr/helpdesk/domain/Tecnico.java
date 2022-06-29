@@ -14,10 +14,15 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 public class Tecnico extends Pessoa{
     private static final long serialVersionUID = 1L;
-
-    @JsonIgnore//caso der esse de serializacao, a lista de chamadas vai ficar chamando os tecnicos
-    //ele entra em loop infinito o jsonIgnore faz com que ele nao precise chamar essa instancia
-    @OneToMany(mappedBy = "tecnico")
+    /*
+     * JSON IGNORE
+     * caso der erro de serializacao, a lista de chamadas vai ficar chamando os tecnicos
+     * ele entra em loop infinito o jsonIgnore faz com que ele nao precise chamar essa instancia
+     * 
+     * É essencial ao mexer com array denro de um objeto
+     */
+    @JsonIgnore
+    @OneToMany(mappedBy = "tecnico")//deve possuir varios chamados
     private List<Chamado> chamados = new ArrayList<>();
 
     public Tecnico() {
@@ -30,6 +35,7 @@ public class Tecnico extends Pessoa{
         addPerfil(Perfil.TECNICO);
     }
 
+    //CRIAR UM TECNICO ATRAVE DE UM TECNICO DTO
     public Tecnico(TecnicoDTO obj) {
         super();
         this.id = obj.getId();

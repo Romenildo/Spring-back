@@ -20,11 +20,27 @@ import org.hibernate.validator.constraints.br.CPF;
 import com.Ktr.helpdesk.domain.enums.Perfil;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-//pode ser substituida pelo lombok com o @Data os gets seters enums
+/*
+ * As classes de Entity, são as entidades do sistema, como aluno, cliente, professor, projetos, turmar, objetos
+ * 
+ * O Serializable é recomendado para o controle da transmissao dos dados e controle, é obrigatorio
+ * ao implementar a classe colocar o serialVersionUID, porem ficara somente na classe nao deve possuir getter ou setter
+ * 
+ * Os atributos referentes a classe todas que irao ser salvas no banco de dados deve possuir a notacao @Column
+ * para gerar a coluna no banco, elas podem ser @Column(name = "cpf"), ou simples @Column e ele pegara o nome da variavel
+ * 
+ * 
+ * 
+ OBS: OS GETTERS E SETTERS PODEM SER SUBSTITUIDOS COM A UTILIZACAO DO LOMBOOK COM A ANOTACAO @Data
+ */
 @Entity
 public abstract class Pessoa implements Serializable {
     private static final long serialVersionUID = 1L;
 
+    /*
+     * O id possui a notacao especial de @id, e a geracao de seu valor de forma que seja sequencial ou outras formas
+     * para gerar automaticamente o id toda vez que um novo objeto é criado
+     */
     @Id
     @GeneratedValue(strategy =  GenerationType.IDENTITY)
     protected Integer id;
@@ -37,12 +53,14 @@ public abstract class Pessoa implements Serializable {
     protected String email;
     protected String senha;
 
+    //pesquisar sobre elementCollection
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "PERFIS")
     protected Set<Integer> perfis = new HashSet<>();
     //Set nao permite ter valores repetidos
     //hashset bloqueai a exceção caso o ponteiro aponte para null
-    @JsonFormat(pattern = "dd/MM/yyyy")
+
+    @JsonFormat(pattern = "dd/MM/yyyy")//padrao ao utilizar algum tipo de data
     protected LocalDate dataCriacao = LocalDate.now();
     
     public Pessoa() {

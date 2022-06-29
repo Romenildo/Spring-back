@@ -14,14 +14,31 @@ import com.Ktr.helpdesk.domain.enums.Prioridade;
 import com.Ktr.helpdesk.domain.enums.Status;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+/*
+ * As classes de Entity, são as entidades do sistema, como aluno, cliente, professor, projetos, turmar, objetos
+ * 
+ * O Serializable é recomendado para o controle da transmissao dos dados e controle, é obrigatorio
+ * ao implementar a classe colocar o serialVersionUID, porem ficara somente na classe nao deve possuir getter ou setter
+ * 
+ * Os atributos referentes a classe todas que irao ser salvas no banco de dados deve possuir a notacao @Column
+ * para gerar a coluna no banco, elas podem ser @Column(name = "cpf"), ou simples @Column e ele pegara o nome da variavel
+ * 
+ * 
+ * 
+ OBS: OS GETTERS E SETTERS PODEM SER SUBSTITUIDOS COM A UTILIZACAO DO LOMBOOK COM A ANOTACAO @Data
+ */
 @Entity
 public class Chamado implements Serializable {
     private static final long serialVersionUID = 1L;
-
+     /*
+     * O id possui a notacao especial de @id, e a geracao de seu valor de forma que seja sequencial ou outras formas
+     * para gerar automaticamente o id toda vez que um novo objeto é criado
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    //Padrao ao utilizar datas
     @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate dataAbertura = LocalDate.now();
     @JsonFormat(pattern = "dd/MM/yyyy")
@@ -32,6 +49,12 @@ public class Chamado implements Serializable {
     private String titulo;
     private String observacoes;
 
+    //Relacionamentos
+    /*
+     * Muitos para um Um tecnico ou ciente pode ter varios chamados,
+     *  porem um chamado so pode ter um recnico e um cliente, então eles possui o tecnico e o cliente 
+     * referente ao id deles para ligar e acessar o tecnico pelo  chamado
+     */
     @ManyToOne
     @JoinColumn(name = "tecnico_id")
     private Tecnico tecnico;

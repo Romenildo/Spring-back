@@ -17,11 +17,14 @@ import com.fasterxml.jackson.annotation.JsonFormat;
  * É uma boa pratica de programação o qual é uma camada a mais de controle
  * entre a entidade e o controller, ao invez de pegar a entidade pega somente seus valores
  * deixando assim a aplicacao mais segura e confiavel
+ * 
+ * Não precisa criar um dto com todos os valores da entidade somente o necessario para ser retornado ou manipulado
  */
 public class TecnicoDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     protected Integer id;
+    //NOTNULL é do Vlidations para validar os valores antes mesmo da requisicao
     @NotNull(message = "O campo NOME é requerido")
     protected String nome;
     @NotNull(message = "O campo CPF é requerido")
@@ -39,6 +42,7 @@ public class TecnicoDTO implements Serializable {
         super();
     }
 
+    //transforma um objeto em objeto DTO
     public TecnicoDTO(Tecnico obj) {
         super();
         this.id = obj.getId();
