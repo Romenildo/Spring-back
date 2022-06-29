@@ -20,6 +20,7 @@ import com.Ktr.helpdesk.services.exceptions.ObjectNotFoundException;
 
 @Service
 public class ChamadoService {
+
     @Autowired
     private ChamadoRepository repository;
     @Autowired
@@ -28,27 +29,53 @@ public class ChamadoService {
     private ClienteService clienteService;
 
 
+    /*
+     * Funcao encontrar o item por id
+     * Busca o objeto no banco de dados, caso encontrar ele retorna o objeto,
+     * senão o objeto retornara null, então lançar uma exceção de objeto nao encontrado para o response
+     */
     public Chamado findById(Integer id){
         //Optional devido o jpa retorna um objeto do tipo Optional caso ele encontre ou nao o item no banco
         Optional<Chamado> obj = repository.findById(id);
         return obj.orElseThrow(()-> new ObjectNotFoundException("Objeto não encontrado! id : "+ id));
     }
 
+    /*
+     * Listar todos os objetos cadastrados no banco
+     */
     public List<Chamado> findAll(){
         return repository.findAll();
     }
 
+    /*
+     * Criar um novo objeto no banco de dados
+     * o @Valid é do validations ele lança uma exceção antes mesmo da requisicao ser feita
+     * caso o objeto tenha algum valor nulo, ou alguma restricao do validations
+     * Essas validacoes são colocadas no DTO como : @NotNull(message = "O campo XX é requerido") antes das variaveis
+     */
     public Chamado create (@Valid ChamadoDTO objDTO){
         return repository.save(newChamado(objDTO));
     }
+
+    /*
+     * Atualizar um objeto
+     * seta o id no novo item passado então troca os dados dele para o novo
+     */
     
     public Chamado update(Integer id, @Valid ChamadoDTO objDTO){
-        //garantir que o objeto passado tenha o mesmo id do pedido
-        objDTO.setId(id);
-        Chamado oldObj = findById(id);//verificar se o id está no banco ou nao
-        oldObj = newChamado(objDTO);
+       
+        objDTO.setId(id); //garantir que o objeto passado tenha o mesmo id do pedido
+        Chamado oldObj = this.findById(id);//verificar se o id está no banco ou nao(findbyid lança excesao e cancela o resto se objeto nao estiver)
+
+        oldObj = newChamado(objDTO);//antigo vai receber o novo
         return repository.save(oldObj);
     }
+
+    /*
+     * Como o chamado é um objeto que tem relacao com outros dois objetos
+     * É precio alterar eles em todos os seus relacionados
+     * Tecnico e cliente devem ser instanciados e então colocados no chamado
+     */
     
     private Chamado newChamado(ChamadoDTO obj){
 
@@ -66,9 +93,10 @@ public class ChamadoService {
             chamado.setDataFechamento(LocalDate.now());
         }
 
+        //chamado recebe o tecnico e o cliente referente a ele
         chamado.setTecnico(tecnico);
         chamado.setCliente(cliente);
-        //como a prioridade salva no chamado é o codigo, gasta procurar pelo codigo e gerar a prioridade
+        //como a prioridade salva no chamado é o codigo, basta procurar pelo codigo e gerar a prioridade
         chamado.setPrioridade(Prioridade.toEnum(obj.getPrioridade()));
         chamado.setStatus(Status.toEnum(obj.getStatus()));
         
